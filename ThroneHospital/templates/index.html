@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+
+<style>
+    @media (max-width: 800px) {
+        html, body {
+        overflow-x: hidden;
+        }
+    }
+</style>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title> {{APP_NAME}} </title>
+
+    <link rel="shortcut icon" href="{{url_for('static', filename='assets/asset/images/fav.jpg')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='assets/asset/css/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='assets/asset/css/fontawsom-all.min.css')}}">
+     <link rel="stylesheet" href="{{url_for('static', filename='assets/asset/css/animate.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='assets/asset/css/style.css')}}" />
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/png" href="{{url_for('static', filename='assets/images/favicon.ico')}}"/>
+    <link rel="icon" type="image/png" href="{{url_for('static', filename='assets/images/favicon.ico')}}"/>
+</head>
+
+    <body>
+
+  <!--  ************************* Logins ************************** -->
+
+     <section id="logins" class="our-blog container-fluid">
+        <div class="container">
+        <div class="inner-title">
+            <h1 class="throne"><b>{{APP_NAME}}</b></h1>
+            <h2 style="font-size: 38px;font-family:times new roman; text-align: center; margin-bottom: 20px;"><b>Logins</b></h2>
+            </div>
+            <div class="col-sm-12 blog-cont">
+                <div class="row no-margin">
+
+                    <div class="col-sm-4 blog-smk" id="admin">
+                        <div class="blog-single">
+
+                                <img src="{{url_for('static', filename='assets/asset/images/a1.jpg')}}" height="200px" alt="">
+
+                            <div class="blog-single-det">
+                                <h6>Admin Login</h6>
+
+                                <a href="{{url_for('bp.admin_login')}}">
+<!--                                    hms/admin-->
+                                    <button class="btn btn-success btn-sm">Click Here</button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 blog-smk">
+                        <div class="blog-single">
+
+                                <img src="{{url_for('static', filename='assets/asset/images/nurse.jpg')}}" height="200px" alt="">
+
+                            <div class="blog-single-det">
+                                <h6>Nurses Login</h6>
+                                <a href="{{url_for('bp.nurse_login')}}">
+<!--                                    hms/user-login.php-->
+                                    <button class="btn btn-success btn-sm">Click  Here</button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 blog-smk">
+                        <div class="blog-single">
+
+                                <img src="{{url_for('static', filename='assets/asset/images/d1.jpg')}}" alt="">
+
+                            <div class="blog-single-det">
+                                <h6>Doctors login</h6>
+                                <a href="{{url_for('bp.doctor_login')}}">
+<!--                                    hms/doctor-->
+                                    <button class="btn btn-success btn-sm">Click Here</button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 blog-smk" id="lab">
+                        <div class="blog-single">
+
+                                <img src="{{url_for('static', filename='assets/asset/images/lab.jpg')}}" alt="">
+
+                            <div class="blog-single-det">
+                                <h6>Lab login</h6>
+                                <a href="{{url_for('bp.lab_login')}}">
+<!--                                    hms/doctor-->
+                                    <button class="btn btn-success btn-sm">Click Here</button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 blog-smk" id="pharmacy">
+                        <div class="blog-single">
+
+                                <img src="{{url_for('static', filename='assets/asset/images/drug.png')}}" alt="">
+
+                            <div class="blog-single-det" id="pharmacy-det">
+                                <h6>Pharmacy login</h6>
+                                <a href="{{url_for('bp.pharmacy_login')}}">
+<!--                                    hms/doctor-->
+                                    <button class="btn btn-success btn-sm">Click Here</button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ################# Footer Starts Here#######################--->
+
+<div class="copy" style="text-align: center; font-family: 'Times New Roman', Times, serif;">
+    <div class="container">
+       <b> Designed by DigitsInfotech | 08127497918  </b>
+    </div>
+</div>
+</body>
+
+
+<script src="{{url_for('static', filename='assets/asset/js/jquery-3.2.1.min.js')}}"></script>
+<script src="{{url_for('static', filename='assets/asset/js/popper.min.js')}}"></script>
+<script src="{{url_for('static', filename='assets/asset/js/bootstrap.min.js')}}"></script>
+<script src="{{url_for('static', filename='assets/asset/plugins/scroll-nav/js/jquery.easing.min.js')}}"></script>
+<script src="{{url_for('static', filename='assets/asset/plugins/scroll-nav/js/scrolling-nav.js')}}"></script>
+<script src="{{url_for('static', filename='assets/asset/plugins/scroll-fixed/jquery-scrolltofixed-min.js')}}"></script>
+<script src="{{url_for('static', filename='assets/asset/js/script.js')}}"></script>
+</html>
