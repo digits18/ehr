@@ -243,25 +243,48 @@ def admin_dashboard():
     doctor_list = doctor_info()
 
     # ================= NURSES
-    img_index = nurse_list[0]['filename']  # This is the filename like 'nurse.jpg'
-    img_path = os.path.join(app.config['UPLOAD'], img_index)  # Constructs the full path
-    filename = os.path.basename(img_path)  # Extracts the exact filename
+    # Get all image names from nurse_list
+    all_image_name = [item['filename'] for item in nurse_list]
 
+    # Generate the full image paths and URLs
+    images = []  # To store the URLs of all images
+    for image_name in all_image_name:
+        # Construct the full file path
+        img_path = os.path.join(app.config['UPLOAD'], image_name)
 
-    img_url = url_for('static', filename=f'AppUploads/{filename}')  # Create a static URL
+        # Extract just the filename
+        filename = os.path.basename(img_path)
+
+        # Generate the URL for the image
+        img_url = url_for('static', filename=f'AppUploads/{filename}')
+
+        # Append the URL to the images list
+        images.append(img_url)
 
 
     # =============== DOCTORS
 
-    img_locate = doctor_list[0]['image_file']  # This is the filename like 'nurse.jpg'
-    pic_path = os.path.join(app.config['UPLOAD'], img_locate)  # Constructs the full path
-    name_of_file = os.path.basename(pic_path)  # Extracts the exact filename
-    print(name_of_file)
-    img_link = url_for('static', filename=f'AppUploads/{name_of_file}')  # Create a static URL
+    # Get all image names from doctor_list
+    all_image = [pcs['image_file'] for pcs in doctor_list]
+
+    # Generate the full image paths and URLs
+    pictures = []  # To store the URLs of all images
+    for img_name in all_image:
+        # Construct the full file path
+        image_path = os.path.join(app.config['UPLOAD'], img_name)
+
+        # Extract just the filename
+        fileName = os.path.basename(image_path)
+
+        # Generate the URL for the image
+        image_url = url_for('static', filename=f'AppUploads/{fileName}')
+
+        # Append the URL to the images list
+        pictures.append(image_url)
 
     return render_template('admin_dashboard.html', APP_NAME=APP_NAME, all_patients=all_patients,
-                           patient_list=patient_list, all_nurses=all_nurses, nurse_list=nurse_list, img=img_url,
-                           all_doctors=all_doctors, doctor_list=doctor_list, pic=img_link)
+                           patient_list=patient_list, all_nurses=all_nurses, nurse_list=nurse_list, images=images,
+                           all_doctors=all_doctors, doctor_list=doctor_list, pictures=pictures, zip=zip)
 
 
 @bp.route('/add_patient/', methods=['GET', 'POST'])

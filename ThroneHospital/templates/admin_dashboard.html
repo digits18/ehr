@@ -1249,23 +1249,21 @@
                             </tr>
                           </thead>
                           <tbody>
-
+                          {% for image, nurse in zip(images, nurse_list) %}
                             <tr>
                               <td>
-                                {% if img %}
-                                <img src="{{ img }}" class="img-3x rounded-2" alt="Profile Picture">
-                                {% endif %}
-                          {% for item in nurse_list %}
-                                {{item.last_name}}
+
+                                <img src="{{ image }}" class="img-3x rounded-2" alt="Profile Picture">
+                                {{nurse.last_name}}
                               </td>
                               <td>
-                                {{item.mobile}}
+                                {{nurse.mobile}}
                               </td>
-                              <td>{{item.email}}</td>
+                              <td>{{nurse.email}}</td>
                               <td>
-                                {{item.username}}
+                                {{nurse.username}}
                               </td>
-                              <td><span class="badge border border-primary text-primary">{{item.status}}</span></td>
+                              <td><span class="badge border border-primary text-primary">{{nurse.status}}</span></td>
                               <td>
                                 <div class="d-inline-flex gap-1">
                                   <button class="btn btn-primary">Activate</button>
@@ -1312,22 +1310,20 @@
                             </tr>
                           </thead>
                           <tbody>
+                          {% for pic, doc in zip(pictures, doctor_list) %}
                             <tr>
                               <td>
-                                {% if pic %}
                                 <img src="{{pic}}" class="img-3x rounded-2" alt="Profile Image">
-                                {% endif %}
-                          {% for item in doctor_list %}
-                                Dr. {{item.last_name}}
+                                Dr. {{doc.last_name}}
                               </td>
                               <td>
-                                {{item.mobile}}
+                                {{doc.mobile}}
                               </td>
-                              <td>{{item.email}}</td>
+                              <td>{{doc.email}}</td>
                               <td>
-                                {{item.username}}
+                                {{doc.username}}
                               </td>
-                              <td><span class="badge border border-primary text-primary">{{item.status}}</span></td>
+                              <td><span class="badge border border-primary text-primary">{{doc.status}}</span></td>
                               <td>
                                 <div class="d-inline-flex gap-1">
                                   <button class="btn btn-primary">Activate</button>
