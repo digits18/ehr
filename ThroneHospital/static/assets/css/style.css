@@ -688,6 +688,12 @@ label.valid {
  }
  }
 
+ @media (max-width: 768px) {
+  #home-page{
+    margin-left: -25px;
+ }
+ }
+
 /*# sourceMappingURL=style.css.map */
 
 
