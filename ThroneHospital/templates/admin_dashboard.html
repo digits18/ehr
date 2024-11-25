@@ -62,7 +62,7 @@
         <!-- App brand starts -->
         <div class="app-brand ms-3">
           <a href="#" class="d-lg-block d-none">
-            <img src="{{url_for('static', filename='assets/assets/images/favicon.ico')}}" class="logo" alt="Medicare Admin Template">
+            <img src="{{url_for('static', filename='assets/assets/images/favicon.ico')}}" class="logo" alt="EHR">
           </a>
           <span id="app">{{APP_NAME}}</span>
           <a href="#" class="d-lg-none d-md-block">
@@ -74,14 +74,14 @@
         <!-- App header actions starts -->
         <div class="header-actions">
 
-<!--           Search container starts-->
+           <!--  Search container starts -->
 <!--          <div class="search-container d-lg-block d-none mx-3">-->
 <!--            <input type="text" class="form-control" id="searchId" placeholder="Search">-->
 <!--            <i class="ri-search-line"></i>-->
 <!--          </div>-->
-<!--           Search container ends-->
+           <!-- Search container ends -->
 
-<!--           Header actions starts-->
+           <!-- Header actions starts -->
           <div class="d-lg-flex d-none gap-2">
 
             <!-- Select country dropdown starts -->
@@ -289,9 +289,9 @@
 
 <!--              </div>-->
 <!--            </div>-->
-            <!-- Notifications dropdown ends -->
+<!--             &lt;!&ndash; Notifications dropdown ends &ndash;&gt;-->
 
-            <!-- Messages dropdown starts -->
+<!--             &lt;!&ndash; Messages dropdown starts &ndash;&gt;-->
 <!--            <div class="dropdown">-->
 <!--              <a class="dropdown-toggle header-icon" href="#!" role="button" data-bs-toggle="dropdown"-->
 <!--                aria-expanded="false">-->
@@ -401,7 +401,7 @@
           <div class="sidebarMenuScroll">
             <ul class="sidebar-menu">
               <li class="active current-page">
-                <a href="{{url_for('bp.admin_dashboard')}}">
+                <a href="{{url_for('bp.admin_dashboard', user=current_user.username)}}">
                   <i class="ri-home-6-line"></i>
                   <span class="menu-text">Admin Dashboard</span>
                 </a>
@@ -414,7 +414,7 @@
                 </a>
                 <ul class="treeview-menu">
                   <li>
-                    <a href="{{url_for('bp.add_patient')}}">Register Patient</a>
+                    <a href="{{url_for('bp.add_patient', user=current_user.username)}}">Register Patient</a>
                   </li>
                   <li>
                     <a href="#">Patients List</a>
@@ -430,7 +430,7 @@
                 </a>
                 <ul class="treeview-menu">
                   <li>
-                    <a href="{{url_for('bp.add_nurse')}}">Add Nurses</a>
+                    <a href="{{url_for('bp.add_nurse', user=current_user.username)}}">Add Nurses</a>
                   </li>
                   <li>
                     <a href="#">Nurses List</a>
@@ -446,7 +446,7 @@
                 </a>
                 <ul class="treeview-menu">
                   <li>
-                    <a href="{{url_for('bp.add_doctor')}}">Add Doctor</a>
+                    <a href="{{url_for('bp.add_doctor', user=current_user.username)}}">Add Doctor</a>
                   </li>
                   <li>
                     <a href="#">Doctors List</a>
@@ -909,7 +909,7 @@
             <ol class="breadcrumb">
               <li class="breadcrumb-item">
                 <i class="ri-home-8-line lh-1 pe-3 me-3 border-end"></i>
-                <a href="{{url_for('bp.admin_dashboard')}}">Home</a>
+                <a href="{{url_for('bp.admin_dashboard', user=current_user.username)}}">Home</a>
               </li>
               <li class="breadcrumb-item text-primary" aria-current="page">
                 Admin Dashboard
@@ -1200,6 +1200,7 @@
                           </tr>
                         </thead>
                         <tbody>
+                      {% if patient_list %}
                         {% for item in patient_list %}
                           <tr>
                             <td>{{item.patient_num}}</td>
@@ -1216,6 +1217,12 @@
                             </td>
                           </tr>
                         {% endfor %}
+                      {% else %}
+                         <!-- Display 'No Record Found' message -->
+                          <tr>
+                            <td colspan="7" class="text-center">No data available in table</td>
+                          </tr>
+                      {% endif %}
                         </tbody>
                       </table>
                     </div>
@@ -1249,6 +1256,7 @@
                             </tr>
                           </thead>
                           <tbody>
+                        {% if nurse_list %}
                           {% for image, nurse in zip(images, nurse_list) %}
                             <tr>
                               <td>
@@ -1267,8 +1275,7 @@
                               <td>
                                 <div class="d-inline-flex gap-1">
                                   <button class="btn btn-primary">Activate</button>
-                                  <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#viewReportsModal1">
+                                  <button class="btn btn-danger btn-sm">
                                     Block
                                   </button>
 
@@ -1276,6 +1283,12 @@
                               </td>
                             </tr>
                           {% endfor %}
+                        {% else %}
+                            <!-- Display 'No Record Found' message -->
+                            <tr>
+                              <td colspan="6" class="text-center">No data available in table</td>
+                            </tr>
+                        {% endif %}
                           </tbody>
                         </table>
                       </div>
@@ -1310,6 +1323,7 @@
                             </tr>
                           </thead>
                           <tbody>
+                        {% if doctor_list %}
                           {% for pic, doc in zip(pictures, doctor_list) %}
                             <tr>
                               <td>
@@ -1327,14 +1341,19 @@
                               <td>
                                 <div class="d-inline-flex gap-1">
                                   <button class="btn btn-primary">Activate</button>
-                                  <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#viewReportsModal1">
+                                  <button class="btn btn-danger btn-sm">
                                     Block
                                   </button>
                                 </div>
                               </td>
                             </tr>
                           {% endfor %}
+                        {% else %}
+                             <!-- Display 'No Record Found' message -->
+                            <tr>
+                              <td colspan="6" class="text-center">No data available in table</td>
+                            </tr>
+                        {% endif %}
                           </tbody>
                         </table>
                       </div>

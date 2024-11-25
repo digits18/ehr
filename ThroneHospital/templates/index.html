@@ -33,6 +33,34 @@
         <div class="container">
         <div class="inner-title">
             <h1 class="throne"><b>{{APP_NAME}}</b></h1>
+
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                {% for category, message in messages %}
+                   {% if category == 'success' %}
+                      <div class="alert alert-success bg-success text-light border-0 alert-dismissible fade show" role="alert" id="successMessage">
+                        <i class="bi-check-circle-fill"></i>
+                        {{ message }}
+                          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+                      </div>
+                   {% endif %}
+
+                    {% if category == 'error' %}
+                      <div class="alert alert-danger bg-danger text-light border-0 alert-dismissible fade show" role="alert" id="errorMessage">
+                         <i class="bi-exclamation-octagon-fill"></i>
+                        {{ message }}
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+                      </div>
+                    {% endif %}
+                {% endfor %}
+              {% endif %}
+            {% endwith %}
+
+
+
+
+
             <h2 style="font-size: 38px;font-family:times new roman; text-align: center; margin-bottom: 20px;"><b>Logins</b></h2>
             </div>
             <div class="col-sm-12 blog-cont">
@@ -133,4 +161,13 @@
 <script src="{{url_for('static', filename='assets/asset/plugins/scroll-nav/js/scrolling-nav.js')}}"></script>
 <script src="{{url_for('static', filename='assets/asset/plugins/scroll-fixed/jquery-scrolltofixed-min.js')}}"></script>
 <script src="{{url_for('static', filename='assets/asset/js/script.js')}}"></script>
+
+
+    <script type="text/javascript">
+      window.setTimeout("document.getElementById('successMessage').style.display='none';", 5000);
+    </script>
+
+   <script type="text/javascript">
+    window.setTimeout("document.getElementById('errorMessage').style.display='none';", 5000);
+   </script>
 </html>

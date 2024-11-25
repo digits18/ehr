@@ -18,7 +18,7 @@ class Admin(db.Model, UserMixin):
         self.password = password
 
     def __repr__(self):
-        return "<Admin {}>".format(self.username)
+        return self.username
 
 
 class Patient(db.Model):
@@ -36,7 +36,8 @@ class Patient(db.Model):
     nhis = db.Column(db.String, unique=False, nullable=True)
     reg_date = db.Column(db.String, unique=False, nullable=False)
 
-    def __init__(self, patient_num, first_name, last_name, dob, age, gender, address, mobile, marital_status, nhis, reg_date):
+    def __init__(self, patient_num, first_name, last_name, dob, age, gender, address, mobile, marital_status, nhis,
+                 reg_date):
         self.patient_num = patient_num
         self.first_name = first_name
         self.last_name = last_name
@@ -50,7 +51,7 @@ class Patient(db.Model):
         self.reg_date = reg_date
 
     def __repr__(self):
-        return "<Patient {}>".format(self.patient_num)
+        return self.patient_num
 
 
 class Nurse(db.Model):
@@ -76,7 +77,7 @@ class Nurse(db.Model):
         self.status = status
 
     def __repr__(self):
-        return "<Nurse {}>".format(self.username)
+        return self.username
 
 
 class Doctor(db.Model):
@@ -102,4 +103,4 @@ class Doctor(db.Model):
         self.status = status
 
     def __repr__(self):
-        return "<Doctor {}>".format(self.username)
+        return self.username

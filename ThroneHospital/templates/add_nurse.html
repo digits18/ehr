@@ -134,7 +134,7 @@
 
           <!-- Header user settings starts -->
           <div class="dropdown ms-2">
-            <a id="userSettings" class="dropdown-toggle d-flex align-items-center" href="#!" role="button"
+            <a id="userSettings" class="dropdown-toggle d-flex align-items-center" href="{{url_for('bp.logout_admin')}}" role="button"
               data-bs-toggle="dropdown" aria-expanded="false">
               <div class="avatar-box">ADMIN<span class="status busy"></span></div>
             </a>
@@ -177,7 +177,7 @@
           <div class="sidebarMenuScroll">
             <ul class="sidebar-menu">
               <li class="active current-page">
-                <a href="{{url_for('bp.admin_dashboard')}}">
+                <a href="{{url_for('bp.admin_dashboard', user=current_user.username)}}">
                   <i class="ri-home-6-line"></i>
                   <span class="menu-text">Admin Dashboard</span>
                 </a>
@@ -190,7 +190,7 @@
                 </a>
                 <ul class="treeview-menu">
                   <li>
-                    <a href="{{url_for('bp.add_patient')}}">Register Patient</a>
+                    <a href="{{url_for('bp.add_patient', user=current_user.username)}}">Register Patient</a>
                   </li>
                   <li>
                     <a href="#">Patients List</a>
@@ -206,7 +206,7 @@
                 </a>
                 <ul class="treeview-menu">
                   <li>
-                    <a href="{{url_for('bp.add_nurse')}}">Add Nurses</a>
+                    <a href="{{url_for('bp.add_nurse', user=current_user.username)}}">Add Nurses</a>
                   </li>
                   <li>
                     <a href="#">Nurses List</a>
@@ -222,7 +222,7 @@
                 </a>
                 <ul class="treeview-menu">
                   <li>
-                    <a href="{{url_for('bp.add_doctor')}}">Add Doctor</a>
+                    <a href="{{url_for('bp.add_doctor', user=current_user.username)}}">Add Doctor</a>
                   </li>
                   <li>
                     <a href="#">Doctors List</a>

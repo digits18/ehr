@@ -4,11 +4,10 @@ from .models import login_manager
 from .models import db
 from datetime import datetime
 import os
-import sys
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
 from .models import Admin, Patient, Nurse, Doctor
-from .models import logout_user, login_required, login_user
+from .models import current_user, logout_user, login_required, login_user
 from settings import *
 
 bp = Blueprint('bp', __name__)
@@ -38,7 +37,7 @@ def loader_user(username):
 
 @login_manager.unauthorized_handler
 def unauthorized():
-    flash("You must be logged in to view this page.")
+    flash("You must be logged in to view this page.", "error")
     return redirect(url_for("bp.index"))
 
 
@@ -203,7 +202,7 @@ def admin_login():
         current_user = Admin.query.filter_by(username=username).first()
         if current_user and current_user.password == password:
             login_user(current_user)
-            return redirect(url_for('bp.admin_dashboard', current_user=current_user, APP_NAME=APP_NAME))
+            return redirect(url_for('bp.admin_dashboard', user=current_user))
         else:
             flash("Incorrect Login Credentials", "danger")
 
@@ -282,7 +281,7 @@ def admin_dashboard():
         # Append the URL to the images list
         pictures.append(image_url)
 
-    return render_template('admin_dashboard.html', APP_NAME=APP_NAME, all_patients=all_patients,
+    return render_template('admin_dashboard.html', current_user=current_user, APP_NAME=APP_NAME, all_patients=all_patients,
                            patient_list=patient_list, all_nurses=all_nurses, nurse_list=nurse_list, images=images,
                            all_doctors=all_doctors, doctor_list=doctor_list, pictures=pictures, zip=zip)
 
@@ -319,7 +318,7 @@ def add_patient():
             db.session.add(new_patient)
             db.session.commit()
             flash('Patient record successfully entered', 'success')
-            return redirect(url_for('bp.admin_dashboard', APP_NAME=APP_NAME))
+            return redirect(url_for('bp.admin_dashboard', current_user=current_user, APP_NAME=APP_NAME))
 
     # Create an empty list of patient's number
     card_numbers_list = []
@@ -340,7 +339,7 @@ def add_patient():
     new_patient_id = assign_patient_id(card_numbers_list, patient_num_list)
     id_no = new_patient_id
 
-    return render_template('add_patient.html', APP_NAME=APP_NAME, patient_id=id_no)
+    return render_template('add_patient.html', current_user=current_user, APP_NAME=APP_NAME, patient_id=id_no)
 
 
 @bp.route('/add_nurse/', methods=['GET', 'POST'])
@@ -384,10 +383,10 @@ def add_nurse():
                 db.session.add(nurse_account)
                 db.session.commit()
                 flash('Nurse Account successfully created', 'success')
-                return redirect(url_for('bp.admin_dashboard', APP_NAME=APP_NAME))
+                return redirect(url_for('bp.admin_dashboard', current_user=current_user, APP_NAME=APP_NAME))
             else:
                 flash('Invalid file format!', 'error')
-    return render_template('add_nurse.html', APP_NAME=APP_NAME)
+    return render_template('add_nurse.html', current_user=current_user, APP_NAME=APP_NAME)
 
 
 @bp.route('/add_doctor/', methods=['GET', 'POST'])
@@ -431,7 +430,14 @@ def add_doctor():
                 db.session.add(doctor_account)
                 db.session.commit()
                 flash('Doctor Account successfully created', 'success')
-                return redirect(url_for('bp.admin_dashboard', APP_NAME=APP_NAME))
+                return redirect(url_for('bp.admin_dashboard', current_user=current_user, APP_NAME=APP_NAME))
             else:
                 flash('Invalid file format!', 'error')
-    return render_template('add_doctor.html', APP_NAME=APP_NAME)
+    return render_template('add_doctor.html', current_user=current_user, APP_NAME=APP_NAME)
+
+
+@bp.route('/patients_list/', methods=['GET', 'POST'])
+@login_required
+def patients_list():
+    patient_list = patients_info()
+    return render_template('patients_list.html', current_user=current_user, APP_NAME=APP_NAME, patient_list=patient_list)
