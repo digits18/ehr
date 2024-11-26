@@ -86,7 +86,7 @@
 }
 
 #successMessage{
-    width: 320px;
+    width: 360px;
     height: 50px;
     margin-left: 730px;
     padding-top: 10px;
@@ -131,9 +131,6 @@
 }
 
 
-
-
-
 /* Mobile Flash Message*/
 @media (max-width: 1199px) {
     #errorMessage{
@@ -143,7 +140,7 @@
     }
     #successMessage{
         width: 320px;
-        height: 50px;
+        height: 55px;
         margin-left: 60px;
     }
 }

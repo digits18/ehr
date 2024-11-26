@@ -71,23 +71,13 @@ def create_app():
         return jsonify(doctor_list)
 
     @app.route('/delete')
-    def insert_page():
-        # Commit data into table here
-        username = 'judyman'
-        user = Nurse.query.filter_by(username=username).first()
-        if user:
-            db.session.delete(user)
-            db.session.commit()
-            return '<h1>User Successfully deleted</h1>'
-
-    @app.route('/delete')
     def delete():
         # Commit data into table here
-        username = 'Sholatyr'
-        user = Nurse.query.filter_by(username=username).first()
+        patient_num = '00002'
+        user = Patient.query.filter_by(patient_num=patient_num).first()
         if user:
             db.session.delete(user)
             db.session.commit()
-            return '<h1>User Successfully deleted</h1>'
+            return '<h1>Patient Successfully Removed</h1>'
 
     return app

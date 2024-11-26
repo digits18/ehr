@@ -229,9 +229,9 @@ def pharmacy_login():
     return render_template('pharmacy_login.html', APP_NAME=APP_NAME)
 
 
-@bp.route('/admin_dashboard/<user>', methods=['GET', 'POST'])
+@bp.route('/admin_dashboard/', methods=['GET', 'POST'])
 @login_required
-def admin_dashboard(user):
+def admin_dashboard():
     all_patients = total_number_of_patient()
     patient_list = patients_info()
 
@@ -281,15 +281,14 @@ def admin_dashboard(user):
         # Append the URL to the images list
         pictures.append(image_url)
 
-    return render_template('admin_dashboard.html', username=user, APP_NAME=APP_NAME, all_patients=all_patients,
+    return render_template('admin_dashboard.html', APP_NAME=APP_NAME, all_patients=all_patients,
                            patient_list=patient_list, all_nurses=all_nurses, nurse_list=nurse_list, images=images,
                            all_doctors=all_doctors, doctor_list=doctor_list, pictures=pictures, zip=zip)
 
 
-@bp.route('/add_patient/<user>', methods=['GET', 'POST'])
+@bp.route('/add_patient/', methods=['GET', 'POST'])
 @login_required
-def add_patient(user):
-    print(user)
+def add_patient():
     if request.method == 'POST':
         num = request.form.get('patient_num')
         first_name = request.form.get('first_name')
@@ -319,7 +318,7 @@ def add_patient(user):
             db.session.add(new_patient)
             db.session.commit()
             flash('Patient record successfully entered', 'success')
-            return redirect(url_for('bp.admin_dashboard', username=user, APP_NAME=APP_NAME))
+            return redirect(url_for('bp.admin_dashboard', APP_NAME=APP_NAME))
 
     # Create an empty list of patient's number
     card_numbers_list = []
@@ -340,12 +339,12 @@ def add_patient(user):
     new_patient_id = assign_patient_id(card_numbers_list, patient_num_list)
     id_no = new_patient_id
 
-    return render_template('add_patient.html', username=user, APP_NAME=APP_NAME, patient_id=id_no)
+    return render_template('add_patient.html', APP_NAME=APP_NAME, patient_id=id_no)
 
 
-@bp.route('/add_nurse/<user>', methods=['GET', 'POST'])
+@bp.route('/add_nurse/', methods=['GET', 'POST'])
 @login_required
-def add_nurse(user):
+def add_nurse():
     prefix_list = ['070', '080', '081', '090', '091']
     if request.method == 'POST':
         first_name = request.form.get('first_name')
@@ -384,15 +383,15 @@ def add_nurse(user):
                 db.session.add(nurse_account)
                 db.session.commit()
                 flash('Nurse Account successfully created', 'success')
-                return redirect(url_for('bp.admin_dashboard', username=user, APP_NAME=APP_NAME))
+                return redirect(url_for('bp.admin_dashboard', APP_NAME=APP_NAME))
             else:
                 flash('Invalid file format!', 'error')
-    return render_template('add_nurse.html', username=user, APP_NAME=APP_NAME)
+    return render_template('add_nurse.html', APP_NAME=APP_NAME)
 
 
-@bp.route('/add_doctor/<user>', methods=['GET', 'POST'])
+@bp.route('/add_doctor/', methods=['GET', 'POST'])
 @login_required
-def add_doctor(user):
+def add_doctor():
     prefix_list = ['070', '080', '081', '090', '091']
     if request.method == 'POST':
         first_name = request.form.get('first_name')
@@ -431,14 +430,14 @@ def add_doctor(user):
                 db.session.add(doctor_account)
                 db.session.commit()
                 flash('Doctor Account successfully created', 'success')
-                return redirect(url_for('bp.admin_dashboard', username=user, APP_NAME=APP_NAME))
+                return redirect(url_for('bp.admin_dashboard', APP_NAME=APP_NAME))
             else:
                 flash('Invalid file format!', 'error')
-    return render_template('add_doctor.html', username=user, APP_NAME=APP_NAME)
+    return render_template('add_doctor.html', APP_NAME=APP_NAME)
 
 
-@bp.route('/patients_list/<user>', methods=['GET', 'POST'])
+@bp.route('/patients_list/', methods=['GET', 'POST'])
 @login_required
-def patients_list(user):
+def patients_list():
     patient_list = patients_info()
-    return render_template('patients_list.html', username=user, APP_NAME=APP_NAME, patient_list=patient_list)
+    return render_template('patients_list.html', APP_NAME=APP_NAME, patient_list=patient_list)

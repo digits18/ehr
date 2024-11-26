@@ -427,10 +427,10 @@
                 </a>
                 <ul class="treeview-menu">
                   <li>
-                    <a href="{{url_for('bp.add_patient', user=username)}}">Register Patient</a>
+                    <a href="{{url_for('bp.add_patient')}}">Register Patient</a>
                   </li>
                   <li>
-                    <a href="{{url_for('bp.patients_list', user=username)}}">Patients List</a>
+                    <a href="{{url_for('bp.patients_list')}}">Patients List</a>
                   </li>
                 </ul>
               </li>
@@ -443,7 +443,7 @@
                 </a>
                 <ul class="treeview-menu">
                   <li>
-                    <a href="{{url_for('bp.add_nurse', user=username)}}">Add Nurses</a>
+                    <a href="{{url_for('bp.add_nurse')}}">Add Nurses</a>
                   </li>
                   <li>
                     <a href="#">Nurses List</a>
@@ -459,7 +459,7 @@
                 </a>
                 <ul class="treeview-menu">
                   <li>
-                    <a href="{{url_for('bp.add_doctor', user=username)}}">Add Doctor</a>
+                    <a href="{{url_for('bp.add_doctor')}}">Add Doctor</a>
                   </li>
                   <li>
                     <a href="#">Doctors List</a>
@@ -1233,7 +1233,7 @@
                       {% else %}
                          <!-- Display 'No Record Found' message -->
                           <tr>
-                            <td colspan="7" class="text-center">No data available in table</td>
+                            <td colspan="8" class="text-center">No data available in table</td>
                           </tr>
                       {% endif %}
                         </tbody>
