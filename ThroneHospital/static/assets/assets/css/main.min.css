@@ -105,6 +105,34 @@
 }
 
 
+.dropdown-item {
+      font-size: 14px;
+      padding: 10px 15px;
+      transition: 0.3s;
+  }
+
+    .dropdown-item i {
+      margin-right: 10px;
+      font-size: 18px;
+      line-height: 0;
+  }
+
+    .dropdown-item:hover {
+       background-color: #f6f9ff;
+  }
+
+
+.badge-number {
+  position: absolute;
+  inset: -2px -5px auto auto;
+  font-weight: normal;
+  font-size: 12px;
+  padding: 3px 6px;
+}
+
+
+
+
 
 /* Mobile Flash Message*/
 @media (max-width: 1199px) {
