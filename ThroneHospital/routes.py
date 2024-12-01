@@ -21,6 +21,8 @@ upload_folder = os.path.join(static_folder, 'AppUploads')  # Create 'AppUploads'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 os.makedirs(upload_folder, exist_ok=True)
 
+app.config['UPLOAD_FOLDER'] = upload_folder
+
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -247,7 +249,7 @@ def admin_dashboard():
     images = []  # To store the URLs of all images
     for image_name in all_image_name:
         # Construct the full file path
-        img_path = os.path.join(app.config['UPLOAD'], image_name)
+        img_path = os.path.join(app.config['UPLOAD_FOLDER'], image_name)
 
         # Extract just the filename
         filename = os.path.basename(img_path)
@@ -267,7 +269,7 @@ def admin_dashboard():
     pictures = []  # To store the URLs of all images
     for img_name in all_image:
         # Construct the full file path
-        image_path = os.path.join(app.config['UPLOAD'], img_name)
+        image_path = os.path.join(app.config['UPLOAD_FOLDER'], img_name)
 
         # Extract just the filename
         fileName = os.path.basename(image_path)
@@ -421,7 +423,7 @@ def add_doctor():
         else:
             if image and allowed_file(image.filename):
                 filename = secure_filename(image.filename)
-                image.save(os.path.join(app.config['UPLOAD'], filename))
+                image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
                 doctor_account = Doctor(first_name, last_name, mobile, email, username, password, filename, 'ACTIVE')
                 db.session.add(doctor_account)
