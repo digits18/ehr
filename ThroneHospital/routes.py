@@ -10,6 +10,7 @@ from .models import Admin, Patient, Nurse, Doctor
 from .models import current_user, logout_user, login_required, login_user
 from settings import *
 
+
 bp = Blueprint('bp', __name__)
 
 app = Flask(__name__)
@@ -440,3 +441,14 @@ def add_doctor():
 def patients_list():
     patient_list = patients_info()
     return render_template('patients_list.html', APP_NAME=APP_NAME, patient_list=patient_list)
+
+
+@bp.route('/error')
+def error():
+    try:
+        # Simulate an error for demonstration purposes
+        raise Exception("This is a test error")
+    except Exception as e:
+        app.logger.error(f"An error occurred: {str(e)}")  # Log the exact error message
+        # Return the exact error message to the user
+        return jsonify({"error": str(e)}), 500
