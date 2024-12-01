@@ -20,6 +20,18 @@ class Admin(db.Model, UserMixin):
     def __repr__(self):
         return self.username
 
+    def is_active(self):
+        return self.username
+
+    def get_id(self):
+        return str(self.id)
+
+    def is_authenticated(self):
+        return True
+
+    def is_anonymous(self):
+        return False
+
 
 class Patient(db.Model):
     tablename = 'patient'
