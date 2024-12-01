@@ -130,6 +130,9 @@
   padding: 3px 6px;
 }
 
+#appointments{
+ width: 190px;
+}
 
 /* Mobile Flash Message*/
 @media (max-width: 1199px) {

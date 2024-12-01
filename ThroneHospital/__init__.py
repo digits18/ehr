@@ -4,17 +4,28 @@ from .models import db, Admin, Patient, Nurse, Doctor
 from .models import migrate
 from .models import login_manager
 from flask import jsonify
+from config import Config
+import logging
 
 
 def create_app():
     app = Flask(__name__, template_folder='templates', static_folder='static')
-    app.config['SECRET_KEY'] = 'hjghfgjdfnzxbvfhgijhjsdvgsdhfejfs'
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///throne_db.sqlite"
+    app.config.from_object(Config)
+    # app.config['SECRET_KEY'] = 'hjghfgjdfnzxbvfhgijhjsdvgsdhfejfs'
+    # app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///throne_db.sqlite"
     db.init_app(app)
     migrate.init_app(app, db)
     login_manager.init_app(app)
     # Register blueprints here
     app.register_blueprint(bp)
+
+    # Setup console logging
+    if not app.debug:
+        stream_handler = logging.StreamHandler()
+        stream_handler.setLevel(logging.INFO)
+        app.logger.addHandler(stream_handler)
+    app.logger.setLevel(logging.INFO)
+    app.logger.info('EHR Startup')
 
     @app.route('/patients_records')
     def patients_records():
@@ -36,8 +47,8 @@ def create_app():
             patient_list.append(dic)
         return jsonify(patient_list)
 
-    @app.route('/nurse_accounts')
-    def nurse_accounts():
+    @app.route('/nurses_account')
+    def nurses_account():
         nurse_list = []
         nurse_login_account = Nurse.query.all()
         for item in nurse_login_account:
@@ -47,14 +58,14 @@ def create_app():
                 'Mobile': item.mobile,
                 'Email': item.email,
                 'Username': item.username,
-                'Profile Pic Filename' : item.profile_pic,
+                'Profile Pic Filename': item.profile_pic,
                 'status': item.status
             }
             nurse_list.append(dic)
         return jsonify(nurse_list)
 
-    @app.route('/doctor_accounts')
-    def doctor_accounts():
+    @app.route('/doctors_account')
+    def doctors_account():
         doctor_list = []
         doctor_login_account = Doctor.query.all()
         for item in doctor_login_account:
@@ -69,15 +80,5 @@ def create_app():
             }
             doctor_list.append(dic)
         return jsonify(doctor_list)
-
-    @app.route('/delete')
-    def delete():
-        # Commit data into table here
-        patient_num = '00002'
-        user = Patient.query.filter_by(patient_num=patient_num).first()
-        if user:
-            db.session.delete(user)
-            db.session.commit()
-            return '<h1>Patient Successfully Removed</h1>'
 
     return app
