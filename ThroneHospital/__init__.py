@@ -81,4 +81,14 @@ def create_app():
             doctor_list.append(dic)
         return jsonify(doctor_list)
 
+    @app.route('/insert')
+    def insert_page():
+        # Commit data into table here
+        username = 'DigitsInfotech'
+        password = 'throne2024'
+        admin = Admin(username, password)
+        db.session.add(admin)
+        db.session.commit()
+        return f'<h1>Admin {username} successfully inserted </h1>'
+
     return app
