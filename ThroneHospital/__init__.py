@@ -10,7 +10,7 @@ import logging
 def create_app():
     app = Flask(__name__, template_folder='templates', static_folder='static')
     app.config.from_object(Config)
-    # app.config['SECRET_KEY'] = 'hjghfgjdfnzxbvfhgijhjsdvgsdhfejfs'
+    app.config['SECRET_KEY'] = 'hjghfgjdfnzxbvfhgijhjsdvgsdhfejfs'
     # app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///throne_db.sqlite"
     db.init_app(app)
     migrate.init_app(app, db)

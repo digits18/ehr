@@ -201,7 +201,7 @@ def admin_login():
         password = request.form.get("password")
         current_user = Admin.query.filter_by(username=username).first()
         if current_user and current_user.password == password:
-            login_user(current_user)
+            login_user(current_user, remember=True)
             return redirect(url_for('bp.admin_dashboard', user=current_user.username))
         else:
             flash("Incorrect Login Credentials", "danger")
