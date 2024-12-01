@@ -2,6 +2,7 @@ from flask import Flask
 from .routes import bp
 from .models import db, login_manager, Admin, Patient, Nurse, Doctor
 from .models import migrate
+from .routes import upload_folder
 from flask import jsonify
 from config import Config
 import logging
@@ -11,6 +12,9 @@ def create_app():
     app = Flask(__name__, template_folder='templates', static_folder='static')
     app.config.from_object(Config)
     app.config['SECRET_KEY'] = 'hjghfgjdfnzxbvfhgijhjsdvgsdhfejfs'
+    # Configure app to allow file uploads
+    app.config['UPLOAD_FOLDER'] = upload_folder
+    app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16 MB limit
     # app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///throne_db.sqlite"
     db.init_app(app)
     migrate.init_app(app, db)

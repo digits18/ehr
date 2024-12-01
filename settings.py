@@ -1,5 +1,6 @@
 API_SERVER = f"http://127.0.0.1:5002"
 APP_NAME = "Throne Hospital"
+img_upload_path = 'https://throne-hospital.vercel.app//static/AppUploads'
 
 '''Under __init__.py'''
 

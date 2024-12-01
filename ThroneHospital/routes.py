@@ -21,8 +21,6 @@ upload_folder = os.path.join(static_folder, 'AppUploads')  # Create 'AppUploads'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 os.makedirs(upload_folder, exist_ok=True)
 
-app.config['UPLOAD'] = upload_folder
-
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -260,7 +258,6 @@ def admin_dashboard():
         # Append the URL to the images list
         images.append(img_url)
 
-
     # =============== DOCTORS
 
     # Get all image names from doctor_list
@@ -377,7 +374,7 @@ def add_nurse():
         else:
             if image and allowed_file(image.filename):
                 filename = secure_filename(image.filename)
-                image.save(os.path.join(app.config['UPLOAD'], filename))
+                image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
                 nurse_account = Nurse(first_name, last_name, mobile, email, username, password, filename, 'ACTIVE')
                 db.session.add(nurse_account)
