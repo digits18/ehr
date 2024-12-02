@@ -22,7 +22,7 @@ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 os.makedirs(upload_folder, exist_ok=True)
 
 app.config['UPLOAD_FOLDER'] = upload_folder
-
+TEMP_UPLOAD_FOLDER = '/tmp'
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -377,7 +377,7 @@ def add_nurse():
             else:
                 if image and allowed_file(image.filename):
                     filename = secure_filename(image.filename)
-                    image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                    image.save(os.path.join(TEMP_UPLOAD_FOLDER, filename))
 
                     nurse_account = Nurse(first_name, last_name, mobile, email, username, password, filename, 'ACTIVE')
                     db.session.add(nurse_account)
