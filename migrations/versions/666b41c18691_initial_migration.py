@@ -1,8 +1,8 @@
 """Initial migration
 
-Revision ID: 93ed348210b0
+Revision ID: 666b41c18691
 Revises: 
-Create Date: 2024-12-02 14:53:14.548376
+Create Date: 2024-12-02 15:10:08.917358
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '93ed348210b0'
+revision = '666b41c18691'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -22,18 +22,10 @@ def upgrade():
         batch_op.create_unique_constraint(None, ['id'])
 
     with op.batch_alter_table('doctor', schema=None) as batch_op:
-        batch_op.add_column(sa.Column('filename', sa.String(length=255), nullable=False))
-        batch_op.add_column(sa.Column('content_type', sa.String(length=50), nullable=False))
-        batch_op.add_column(sa.Column('data', sa.Text(), nullable=False))
         batch_op.create_unique_constraint(None, ['id'])
-        batch_op.drop_column('profile_pic')
 
     with op.batch_alter_table('nurse', schema=None) as batch_op:
-        batch_op.add_column(sa.Column('filename', sa.String(length=255), nullable=False))
-        batch_op.add_column(sa.Column('content_type', sa.String(length=50), nullable=False))
-        batch_op.add_column(sa.Column('data', sa.Text(), nullable=False))
         batch_op.create_unique_constraint(None, ['id'])
-        batch_op.drop_column('profile_pic')
 
     with op.batch_alter_table('patient', schema=None) as batch_op:
         batch_op.create_unique_constraint(None, ['id'])
@@ -47,18 +39,10 @@ def downgrade():
         batch_op.drop_constraint(None, type_='unique')
 
     with op.batch_alter_table('nurse', schema=None) as batch_op:
-        batch_op.add_column(sa.Column('profile_pic', sa.VARCHAR(), autoincrement=False, nullable=False))
         batch_op.drop_constraint(None, type_='unique')
-        batch_op.drop_column('data')
-        batch_op.drop_column('content_type')
-        batch_op.drop_column('filename')
 
     with op.batch_alter_table('doctor', schema=None) as batch_op:
-        batch_op.add_column(sa.Column('profile_pic', sa.VARCHAR(), autoincrement=False, nullable=False))
         batch_op.drop_constraint(None, type_='unique')
-        batch_op.drop_column('data')
-        batch_op.drop_column('content_type')
-        batch_op.drop_column('filename')
 
     with op.batch_alter_table('admin', schema=None) as batch_op:
         batch_op.drop_constraint(None, type_='unique')
