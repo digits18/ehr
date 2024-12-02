@@ -1,10 +1,11 @@
-from flask import Blueprint, Flask, jsonify
+from flask import Blueprint, Flask, jsonify, request
 from flask import render_template, request, flash, jsonify, redirect, url_for
 from .models import login_manager
 from .models import db
 from datetime import datetime
 import os
 from werkzeug.utils import secure_filename
+import base64
 from werkzeug.security import generate_password_hash, check_password_hash
 from .models import Admin, Patient, Nurse, Doctor
 from .models import current_user, logout_user, login_required, login_user
@@ -23,6 +24,7 @@ os.makedirs(upload_folder, exist_ok=True)
 
 app.config['UPLOAD_FOLDER'] = upload_folder
 TEMP_UPLOAD_FOLDER = '/tmp'
+
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -122,7 +124,9 @@ def nurse_info():
             'mobile': item.mobile,
             'email': item.email,
             'username': item.username,
-            'filename': item.profile_pic,
+            'filename': item.filename,
+            'image_type': item.content_type,
+            'encoded_img': item.data,
             'status': item.status
         }
         nurse_list.append(dic)
@@ -140,7 +144,9 @@ def doctor_info():
             'mobile': item.mobile,
             'email': item.email,
             'username': item.username,
-            'image_file': item.profile_pic,
+            'filename': item.filename,
+            'image_type': item.content_type,
+            'encoded_img': item.data,
             'status': item.status
         }
         doctor_list.append(dic)
@@ -241,48 +247,9 @@ def admin_dashboard():
     all_doctors = total_number_of_doctor()
     doctor_list = doctor_info()
 
-    # ================= NURSES
-    # Get all image names from nurse_list
-    all_image_name = [item['filename'] for item in nurse_list]
-
-    # Generate the full image paths and URLs
-    images = []  # To store the URLs of all images
-    for image_name in all_image_name:
-        # Construct the full file path
-        img_path = os.path.join(app.config['UPLOAD_FOLDER'], image_name)
-
-        # Extract just the filename
-        filename = os.path.basename(img_path)
-
-        # Generate the URL for the image
-        img_url = url_for('static', filename=f'AppUploads/{filename}')
-
-        # Append the URL to the images list
-        images.append(img_url)
-
-    # =============== DOCTORS
-
-    # Get all image names from doctor_list
-    all_image = [pcs['image_file'] for pcs in doctor_list]
-
-    # Generate the full image paths and URLs
-    pictures = []  # To store the URLs of all images
-    for img_name in all_image:
-        # Construct the full file path
-        image_path = os.path.join(app.config['UPLOAD_FOLDER'], img_name)
-
-        # Extract just the filename
-        fileName = os.path.basename(image_path)
-
-        # Generate the URL for the image
-        image_url = url_for('static', filename=f'AppUploads/{fileName}')
-
-        # Append the URL to the images list
-        pictures.append(image_url)
-
     return render_template('admin_dashboard.html', APP_NAME=APP_NAME, all_patients=all_patients,
-                           patient_list=patient_list, all_nurses=all_nurses, nurse_list=nurse_list, images=images,
-                           all_doctors=all_doctors, doctor_list=doctor_list, pictures=pictures, zip=zip)
+                           patient_list=patient_list, all_nurses=all_nurses, nurse_list=nurse_list,
+                           all_doctors=all_doctors, doctor_list=doctor_list)
 
 
 @bp.route('/add_patient/', methods=['GET', 'POST'])
@@ -376,10 +343,12 @@ def add_nurse():
                 flash('Password must contain at least 2 numbers.', 'error')
             else:
                 if image and allowed_file(image.filename):
-                    filename = secure_filename(image.filename)
-                    image.save(os.path.join(TEMP_UPLOAD_FOLDER, filename))
+                    image_data = image.read()
+                    # Encode the binary data to Base64
+                    encoded_data = base64.b64encode(image_data).decode('utf-8')
 
-                    nurse_account = Nurse(first_name, last_name, mobile, email, username, password, filename, 'ACTIVE')
+                    nurse_account = Nurse(first_name, last_name, mobile, email, username, password, image.filename,
+                                          image.content_type, encoded_data, 'ACTIVE')
                     db.session.add(nurse_account)
                     db.session.commit()
                     flash('Nurse Account successfully created', 'success')
@@ -425,10 +394,12 @@ def add_doctor():
             flash('Password must contain at least 2 numbers.', 'error')
         else:
             if image and allowed_file(image.filename):
-                filename = secure_filename(image.filename)
-                image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                image_data = image.read()
+                # Encode the binary data to Base64
+                encoded_data = base64.b64encode(image_data).decode('utf-8')
 
-                doctor_account = Doctor(first_name, last_name, mobile, email, username, password, filename, 'ACTIVE')
+                doctor_account = Doctor(first_name, last_name, mobile, email, username, password, image.filename,
+                                        image.content_type, encoded_data, 'ACTIVE')
                 db.session.add(doctor_account)
                 db.session.commit()
                 flash('Doctor Account successfully created', 'success')
@@ -443,6 +414,3 @@ def add_doctor():
 def patients_list():
     patient_list = patients_info()
     return render_template('patients_list.html', APP_NAME=APP_NAME, patient_list=patient_list)
-
-
-

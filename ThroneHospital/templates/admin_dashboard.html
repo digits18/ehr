@@ -1270,11 +1270,10 @@
                           </thead>
                           <tbody>
                         {% if nurse_list %}
-                          {% for image, nurse in zip(images, nurse_list) %}
+                          {% for nurse in nurse_list %}
                             <tr>
                               <td>
-
-                                <img src="{{ image }}" class="img-3x rounded-2" alt="Profile Picture">
+                                <img src="data:{{ nurse.image_type }};base64,{{ nurse.encoded_img }}" class="img-3x rounded-2" alt="Profile Picture">
                                 {{nurse.last_name}}
                               </td>
                               <td>
@@ -1337,10 +1336,10 @@
                           </thead>
                           <tbody>
                         {% if doctor_list %}
-                          {% for pic, doc in zip(pictures, doctor_list) %}
+                          {% for doc in doctor_list %}
                             <tr>
                               <td>
-                                <img src="{{pic}}" class="img-3x rounded-2" alt="Profile Image">
+                                <img src="data:{{ doc.image_type }};base64,{{ nurse.encoded_img }}" class="img-3x rounded-2" alt="Profile Image">
                                 Dr. {{doc.last_name}}
                               </td>
                               <td>

@@ -29,11 +29,10 @@ img_upload_path = 'https://throne-hospital.vercel.app//static/AppUploads'
 
 
 # @app.route('/delete')
-# def insert_page():
-#     # Commit data into table here
-#     username = 'admin'
-#     user = Admin.query.filter_by(username=username).first()
+# def delete():
+#     username = 'Roselyn36'
+#     user = Nurse.query.filter_by(username=username).first()
 #     if user:
 #         db.session.delete(user)
 #         db.session.commit()
-#         return '<h1>User Successfully deleted</h1>'
+#         return f'<h1>Nurse {username} Successfully deleted</h1>'

@@ -11,6 +11,7 @@ if __name__ == '__main__':
 
 
 
+
 # Create the Migration folder first by running the code below
 # flask db init
 #To initially migrate the db, run the code below
