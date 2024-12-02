@@ -10,7 +10,6 @@ from .models import Admin, Patient, Nurse, Doctor
 from .models import current_user, logout_user, login_required, login_user
 from settings import *
 
-
 bp = Blueprint('bp', __name__)
 
 app = Flask(__name__)
@@ -345,48 +344,51 @@ def add_patient():
 @bp.route('/add_nurse/', methods=['GET', 'POST'])
 @login_required
 def add_nurse():
-    prefix_list = ['070', '080', '081', '090', '091']
-    if request.method == 'POST':
-        first_name = request.form.get('first_name')
-        last_name = request.form.get('last_name')
-        mobile = request.form.get('mobile')
-        email = request.form.get('email')
-        username = request.form.get('username')
-        password = request.form.get('password')
-        image = request.files.get('profile_pic')
+    try:
+        prefix_list = ['070', '080', '081', '090', '091']
+        if request.method == 'POST':
+            first_name = request.form.get('first_name')
+            last_name = request.form.get('last_name')
+            mobile = request.form.get('mobile')
+            email = request.form.get('email')
+            username = request.form.get('username')
+            password = request.form.get('password')
+            image = request.files.get('profile_pic')
 
-        response = verify_nurse_username(username)
-        # Check if the password contains at least 2 numbers
-        password_has_number = sum(1 for char in password if char.isdigit())
+            response = verify_nurse_username(username)
+            # Check if the password contains at least 2 numbers
+            password_has_number = sum(1 for char in password if char.isdigit())
 
-        prefix = mobile[0:3]
-        if len(first_name) < 3:
-            flash('Pls enter your first name', 'error')
-        elif len(username) < 6:
-            flash('Username too short', 'error')
-        elif response:
-            flash(f'{response}', 'error')
-        elif prefix not in prefix_list:
-            flash('Invalid mobile number prefix', 'error')
-        elif len(mobile) < 11:
-            flash('Invalid mobile number', 'error')
-        elif len(password) < 8:
-            flash('Weak password ', 'error')
-        elif password_has_number < 2:
-            flash('Password must contain at least 2 numbers.', 'error')
-        else:
-            if image and allowed_file(image.filename):
-                filename = secure_filename(image.filename)
-                image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-
-                nurse_account = Nurse(first_name, last_name, mobile, email, username, password, filename, 'ACTIVE')
-                db.session.add(nurse_account)
-                db.session.commit()
-                flash('Nurse Account successfully created', 'success')
-                return redirect(url_for('bp.admin_dashboard', APP_NAME=APP_NAME))
+            prefix = mobile[0:3]
+            if len(first_name) < 3:
+                flash('Pls enter your first name', 'error')
+            elif len(username) < 6:
+                flash('Username too short', 'error')
+            elif response:
+                flash(f'{response}', 'error')
+            elif prefix not in prefix_list:
+                flash('Invalid mobile number prefix', 'error')
+            elif len(mobile) < 11:
+                flash('Invalid mobile number', 'error')
+            elif len(password) < 8:
+                flash('Weak password ', 'error')
+            elif password_has_number < 2:
+                flash('Password must contain at least 2 numbers.', 'error')
             else:
-                flash('Invalid file format!', 'error')
-    return render_template('add_nurse.html', APP_NAME=APP_NAME)
+                if image and allowed_file(image.filename):
+                    filename = secure_filename(image.filename)
+                    image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+                    nurse_account = Nurse(first_name, last_name, mobile, email, username, password, filename, 'ACTIVE')
+                    db.session.add(nurse_account)
+                    db.session.commit()
+                    flash('Nurse Account successfully created', 'success')
+                    return redirect(url_for('bp.admin_dashboard', APP_NAME=APP_NAME))
+                else:
+                    flash('Invalid file format!', 'error')
+        return render_template('add_nurse.html', APP_NAME=APP_NAME)
+    except Exception as e:
+        return str(e)
 
 
 @bp.route('/add_doctor/', methods=['GET', 'POST'])
@@ -443,12 +445,4 @@ def patients_list():
     return render_template('patients_list.html', APP_NAME=APP_NAME, patient_list=patient_list)
 
 
-@bp.route('/error')
-def error():
-    try:
-        # Simulate an error for demonstration purposes
-        raise Exception("This is a test error")
-    except Exception as e:
-        app.logger.error(f"An error occurred: {str(e)}")  # Log the exact error message
-        # Return the exact error message to the user
-        return jsonify({"error": str(e)}), 500
+
